@@ -1,7 +1,8 @@
-const express = require("express");
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
 const crypto = require("crypto");
+const express = require("express");
+const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 const nodeMailer = require("nodemailer");
 
 require("dotenv").config();
@@ -13,8 +14,6 @@ app.use(cors()); // CORS Middleware
 
 app.use(bodyParser.urlencoded({ extended: false })); // used to parse URL-encoded form data from the request body
 app.use(bodyParser.json());
-
-const jwt = require("jsonwebtoken");
 
 // Connect TO MongoDB and start Backend
 const uri = process.env.MONGO_DB_URI;

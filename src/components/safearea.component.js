@@ -1,5 +1,5 @@
-import { SafeAreaView, StatusBar, StyleSheet } from "react-native";
 import PropTypes from "prop-types";
+import { SafeAreaView, StatusBar, StyleSheet } from "react-native";
 
 const SafeArea = ({ children, customStyles }) => {
   const containerStyle = StyleSheet.flatten([styles.container, customStyles]);

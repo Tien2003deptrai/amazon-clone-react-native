@@ -1,4 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
+
 import AccountNavigation from "./account.navigation";
 
 const Navigation = () => {

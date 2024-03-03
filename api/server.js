@@ -1,15 +1,18 @@
-const bodyParser = require("body-parser");
-const crypto = require("crypto");
-const express = require("express");
-const jwt = require("jsonwebtoken");
-const mongoose = require("mongoose");
-const nodeMailer = require("nodemailer");
+import bodyParser from "body-parser";
+import cors from "cors";
+import crypto from "crypto";
+import express from "express";
+import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
+import nodeMailer from "nodemailer";
 
-require("dotenv").config();
+import accountRoutes from "./routes/account.routes";
+
+import dotenv from "dotenv";
+dotenv.config();
 const app = express();
 const port = process.env.PORT || 8000;
 
-const cors = require("cors");
 app.use(cors()); // CORS Middleware
 
 app.use(bodyParser.urlencoded({ extended: false })); // used to parse URL-encoded form data from the request body

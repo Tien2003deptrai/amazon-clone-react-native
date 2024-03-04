@@ -2,7 +2,6 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
-import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 
 import accountRoutes from "./routes/account.routes.js";
@@ -32,4 +31,4 @@ mongoose
   });
 
 // Server Endpoints
-app.use(`${apiVersion}/users`, accountRoutes);
+app.use(`/${apiVersion}/users`, accountRoutes);

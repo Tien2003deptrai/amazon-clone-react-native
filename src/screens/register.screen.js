@@ -1,6 +1,8 @@
 import { MaterialIcons, AntDesign, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { useRef } from "react";
+import axios from "axios";
+import { apiBaseUrl, apiVersion } from "@env";
+import { useState } from "react";
 import {
   View,
   Image,
@@ -13,11 +15,45 @@ import {
 import SafeArea from "../components/safearea.component";
 
 const RegisterScreen = () => {
-  const nameRef = useRef(null);
-  const emailRef = useRef(null);
-  const passwordRef = useRef(null);
-  const confirmPasswordRef = useRef(null);
+  const [formData, setFormData] = useState({
+    name: null,
+    email: null,
+    password: null,
+    confirmPassword: null,
+  });
   const navigation = useNavigation();
+
+  const handleChange = (name, value) => {
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const register = async () => {
+    const { name, email, password, confirmPassword } = formData;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+      alert("Invalid email format.");
+      return;
+    }
+
+    if (password !== confirmPassword && password !== "") {
+      alert("Password does not match.");
+      return;
+    }
+
+    const registerUserEndpoint = `${apiBaseUrl}/${apiVersion}/users/register`;
+    console.log(registerUserEndpoint);
+
+    try {
+      const response = await axios.post(registerUserEndpoint, {
+        name,
+        email,
+        password,
+      });
+      alert(response.data.message);
+    } catch (error) {
+      alert(error.response?.data?.message ?? "Internal server error.");
+    }
+  };
 
   return (
     <SafeArea customStyles={{ alignItems: "center" }}>
@@ -61,7 +97,8 @@ const RegisterScreen = () => {
               color="gray"
             />
             <TextInput
-              ref={nameRef}
+              value={formData.name}
+              onChangeText={(text) => handleChange("name", text)}
               style={{
                 color: "gray",
                 marginVertical: 10,
@@ -91,7 +128,8 @@ const RegisterScreen = () => {
               color="gray"
             />
             <TextInput
-              ref={emailRef}
+              value={formData.email}
+              onChangeText={(text) => handleChange("email", text)}
               style={{
                 color: "gray",
                 marginVertical: 10,
@@ -121,7 +159,8 @@ const RegisterScreen = () => {
               color="gray"
             />
             <TextInput
-              ref={passwordRef}
+              value={formData.password}
+              onChangeText={(text) => handleChange("password", text)}
               secureTextEntry
               style={{
                 color: "gray",
@@ -152,7 +191,8 @@ const RegisterScreen = () => {
               color="gray"
             />
             <TextInput
-              ref={confirmPasswordRef}
+              value={formData.confirmPassword}
+              onChangeText={(text) => handleChange("confirmPassword", text)}
               secureTextEntry
               style={{
                 color: "gray",
@@ -182,6 +222,7 @@ const RegisterScreen = () => {
         <View style={{ marginTop: 80 }} />
 
         <Pressable
+          onPress={register}
           style={{
             width: 200,
             backgroundColor: "#FEBE10",

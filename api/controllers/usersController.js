@@ -1,6 +1,7 @@
+import crypto from "crypto"; // Provide cryptography functions
+
 import User from "../models/user.model.js";
 import { sendVerificationEmailToUser } from "../utils.js";
-import crypto from "crypto"; // Provide cryptography functions
 
 const registerUser = async (req, res) => {
   try {
@@ -18,6 +19,12 @@ const registerUser = async (req, res) => {
 
     await newUser.save();
     await sendVerificationEmailToUser(email, verificationToken);
+
+    res.status(201).json({
+      error: false,
+      message:
+        "Registration successful. Please check your email for verification.",
+    });
   } catch (error) {
     res.status(500).json({
       error: true,
@@ -26,4 +33,29 @@ const registerUser = async (req, res) => {
   }
 };
 
-export { registerUser };
+const verifyUser = async (req, res) => {
+  try {
+    const token = req.params.token;
+    const user = await User.findOne({ verificationToken: token });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: true, message: "Invalid Verification token." });
+    }
+
+    user.verified = true;
+    user.verificationToken = undefined;
+    await user.save();
+
+    res
+      .status(200)
+      .json({ error: false, message: "Email verified successfully." });
+  } catch (error) {
+    res.status(500).json({
+      error: true,
+      message: error.message,
+    });
+  }
+};
+
+export { registerUser, verifyUser };

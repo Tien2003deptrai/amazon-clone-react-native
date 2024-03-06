@@ -1,7 +1,6 @@
 import { MaterialIcons, AntDesign, Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import axios from "axios";
 import { apiBaseUrl, apiVersion } from "@env";
+import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import {
   View,
@@ -16,10 +15,10 @@ import SafeArea from "../components/safearea.component";
 
 const RegisterScreen = () => {
   const [formData, setFormData] = useState({
-    name: null,
-    email: null,
-    password: null,
-    confirmPassword: null,
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
   const navigation = useNavigation();
 
@@ -27,32 +26,59 @@ const RegisterScreen = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const register = async () => {
+  const register = () => {
     const { name, email, password, confirmPassword } = formData;
+    const trimmedName = name.trim();
+    if (trimmedName === "") {
+      alert("Name can not be empty.");
+      return;
+    }
+
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(email)) {
       alert("Invalid email format.");
       return;
     }
 
-    if (password !== confirmPassword && password !== "") {
+    if (
+      password !== confirmPassword ||
+      password === "" ||
+      confirmPassword === ""
+    ) {
       alert("Password does not match.");
       return;
     }
 
     const registerUserEndpoint = `${apiBaseUrl}/${apiVersion}/users/register`;
-    console.log(registerUserEndpoint);
-
-    try {
-      const response = await axios.post(registerUserEndpoint, {
-        name,
+    fetch(registerUserEndpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: trimmedName,
         email,
         password,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setFormData({
+          name: null,
+          email: null,
+          password: null,
+          confirmPassword: null,
+        });
+        alert(data.message);
+      })
+      .catch((error) => {
+        alert(error.message || "Internal server error.");
       });
-      alert(response.data.message);
-    } catch (error) {
-      alert(error.response?.data?.message ?? "Internal server error.");
-    }
   };
 
   return (

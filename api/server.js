@@ -21,7 +21,7 @@ const uri = process.env.MONGO_DB_URI;
 mongoose
   .connect(uri)
   .then(() => {
-    console.log("Conneted to DB.");
+    console.log("Connected to DB.");
     app.listen(port, () => {
       console.log(`Connected to Backend on PORT: ${port}`);
     });

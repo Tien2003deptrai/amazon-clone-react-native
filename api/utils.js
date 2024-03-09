@@ -1,3 +1,5 @@
+import crypto from "crypto"; // Provide cryptography functions
+import jwt from "jsonwebtoken";
 import nodeMailer from "nodemailer";
 
 const sendVerificationEmailToUser = async (email, verificationToken) => {
@@ -26,4 +28,19 @@ const sendVerificationEmailToUser = async (email, verificationToken) => {
   }
 };
 
-export { sendVerificationEmailToUser };
+const generateSecretKey = () => {
+  return crypto.randomBytes(32).toString("hex"); // Convert bytes to hex
+};
+
+const generateToken = (payload) => {
+  const token = jwt.sign(
+    {
+      userId: payload._id,
+    },
+    generateSecretKey(),
+  );
+
+  return token;
+};
+
+export { sendVerificationEmailToUser, generateSecretKey, generateToken };

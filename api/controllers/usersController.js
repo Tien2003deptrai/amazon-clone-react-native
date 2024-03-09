@@ -1,7 +1,9 @@
-import crypto from "crypto"; // Provide cryptography functions
-
 import User from "../models/user.model.js";
-import { sendVerificationEmailToUser } from "../utils.js";
+import {
+  generateSecretKey,
+  generateToken,
+  sendVerificationEmailToUser,
+} from "../utils.js";
 
 const registerUser = async (req, res) => {
   try {
@@ -14,7 +16,7 @@ const registerUser = async (req, res) => {
     }
 
     const newUser = new User({ name, email, password });
-    const verificationToken = crypto.randomBytes(20).toString("hex"); // Convert bytes to hex
+    const verificationToken = generateSecretKey();
     newUser.verificationToken = verificationToken;
 
     await newUser.save();
@@ -58,4 +60,35 @@ const verifyUser = async (req, res) => {
   }
 };
 
-export { registerUser, verifyUser };
+const logInUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: true, message: "User does not exist." });
+    }
+
+    if (user.password !== password) {
+      return res
+        .status(404)
+        .json({ error: true, message: "Icorrect password" });
+    }
+
+    const token = generateToken(user);
+
+    res.status(200).json({
+      error: false,
+      message: "User logged in successfully.",
+      token,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: true,
+      message: error.message,
+    });
+  }
+};
+
+export { registerUser, verifyUser, logInUser };

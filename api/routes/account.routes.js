@@ -1,6 +1,10 @@
 import express from "express";
 
-import { registerUser, verifyUser } from "../controllers/usersController.js";
+import {
+  logInUser,
+  registerUser,
+  verifyUser,
+} from "../controllers/usersController.js";
 
 const accountRoutes = express.Router();
 
@@ -10,8 +14,13 @@ const accountRoutes = express.Router();
 accountRoutes.route("/register").post(registerUser);
 
 //@desc   Endpoint to verify email
-//@route  GET /api/apiVersion/users/register
+//@route  GET /api/apiVersion/users/verift/:token
 //@access Public
 accountRoutes.route("/verify/:token").get(verifyUser);
+
+//@desc   Endpoint to login the user
+//@route  POST /api/apiVersion/users/login
+//@access Public
+accountRoutes.route("/login").post(logInUser);
 
 export default accountRoutes;

@@ -15,10 +15,10 @@ import SafeArea from "../components/safearea.component";
 
 const RegisterScreen = () => {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+    name: null,
+    email: null,
+    password: null,
+    confirmPassword: null,
   });
   const navigation = useNavigation();
 
@@ -57,13 +57,13 @@ const RegisterScreen = () => {
       },
       body: JSON.stringify({
         name: trimmedName,
-        email,
+        email: email.toLowerCase(),
         password,
       }),
     })
       .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
+        if (response.status === 400) {
+          throw new Error("User already exist.");
         }
         return response.json();
       })

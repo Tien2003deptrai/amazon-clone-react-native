@@ -72,7 +72,7 @@ const logInUser = async (req, res) => {
 
     if (user.password !== password) {
       return res
-        .status(404)
+        .status(400)
         .json({ error: true, message: "Icorrect password" });
     }
 

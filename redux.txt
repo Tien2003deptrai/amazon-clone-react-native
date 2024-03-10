@@ -1,0 +1,11 @@
+Actions are plain JavaScript objects that represent an intention to change the state. They contain a type field that describes the type of action being performed.
+Actions are typically created using action creator functions, which are functions that return action objects.
+
+Reducers are pure functions that specify how the application's state changes in response to actions.
+A reducer takes the current state and an action as arguments and returns the new state based on that action.
+Reducers should never mutate the state directly. Instead, they produce new state objects with the updated values.
+
+
+The store holds the complete state tree of your application.
+It allows you to dispatch actions, which trigger state changes.
+The store is created by passing the root reducer function to the createStore function from Redux.

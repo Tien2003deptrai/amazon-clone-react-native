@@ -1,5 +1,6 @@
 import categories from "./categories";
-import sliderImages from "./slider";
 import trendingDeals from "./deals";
+import todaysDeals from "./offers";
+import sliderImages from "./slider";
 
-export { categories, sliderImages, trendingDeals };
+export { categories, sliderImages, trendingDeals, todaysDeals };

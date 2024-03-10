@@ -1,8 +1,8 @@
 import { Entypo, AntDesign, Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import HomeScreen from "../../screens/Home.screen";
 import HomeNavigation from "./home.navigation";
+import HomeScreen from "../../screens/Home.screen";
 
 const TabNavigation = createBottomTabNavigator();
 

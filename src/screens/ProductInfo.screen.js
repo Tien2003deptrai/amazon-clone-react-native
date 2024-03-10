@@ -1,14 +1,20 @@
 import {
+  MaterialCommunityIcons,
+  AntDesign,
+  Ionicons,
+} from "@expo/vector-icons";
+import { useRoute } from "@react-navigation/native";
+import {
   View,
   Text,
   ScrollView,
   Dimensions,
   ImageBackground,
+  Pressable,
 } from "react-native";
-import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
-import SafeArea from "../components/safearea.component";
+
 import Header from "../components/header.component";
-import { useRoute } from "@react-navigation/native";
+import SafeArea from "../components/safearea.component";
 
 const ProductInfoScreen = () => {
   const route = useRoute();
@@ -23,6 +29,7 @@ const ProductInfoScreen = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <Header />
 
+        {/* Images */}
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {product?.carouselImages.map((image, index) => (
             <ImageBackground
@@ -118,8 +125,10 @@ const ProductInfoScreen = () => {
           </Text>
         </View>
 
+        {/* Border */}
         <Text style={{ height: 1, borderColor: "#D0D0D0", borderWidth: 1 }} />
 
+        {/* Size and Color */}
         <View
           style={{
             flexDirection: "row",
@@ -146,11 +155,66 @@ const ProductInfoScreen = () => {
           </Text>
         </View>
 
+        {/* Border */}
         <Text style={{ height: 1, borderColor: "#D0D0D0", borderWidth: 1 }} />
 
-        <View>
-            
+        {/* Price and delivery */}
+        <View style={{ padding: 10 }}>
+          <Text style={{ fontSize: 15, fontWeight: "bold", marginVertical: 5 }}>
+            Total: {product?.price} &#8377;
+          </Text>
+          <Text style={{ color: "#00CED1" }}>
+            Free Delivery Tommorow by 3PM.Order within 10hrs 30mins.
+          </Text>
+
+          <View
+            style={{
+              flexDirection: "row",
+              marginVertical: 5,
+              alignItems: "center",
+              gap: 5,
+            }}
+          >
+            <Ionicons name="location" size={24} color="black" />
+            <Text style={{ fontSize: 15, fontWeight: "500" }}>
+              Deliver to name - City Pincode
+            </Text>
+          </View>
         </View>
+
+        {/* Stock information */}
+        <Text
+          style={{ color: "green", marginHorizontal: 10, fontWeight: "500" }}
+        >
+          In Stock
+        </Text>
+
+        {/* Buy and cart button */}
+        <Pressable
+          style={{
+            backgroundColor: "#FFC72C",
+            padding: 10,
+            borderRadius: 20,
+            justifyContent: "center",
+            alignItems: "center",
+            margin: 10,
+          }}
+        >
+          <Text>Add To Cart</Text>
+        </Pressable>
+        <Pressable
+          style={{
+            backgroundColor: "#FFAC1C",
+            padding: 10,
+            borderRadius: 20,
+            justifyContent: "center",
+            alignItems: "center",
+            marginHorizontal: 10,
+            marginVertical: 5,
+          }}
+        >
+          <Text>Buy Now</Text>
+        </Pressable>
       </ScrollView>
     </SafeArea>
   );

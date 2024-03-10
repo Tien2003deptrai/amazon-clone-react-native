@@ -1,5 +1,6 @@
 import { fakeStoreProductApi } from "@env";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import { useState, useEffect } from "react";
 import { Pressable, ScrollView, Text, View, Image } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -7,11 +8,10 @@ import { SliderBox } from "react-native-image-slider-box";
 
 import ErrorBoundary from "../components/ErrorBoundary.component";
 import ProductItem from "../components/ProductItem.component";
+import Header from "../components/header.component";
 import SafeArea from "../components/safearea.component";
 
 import { categories, sliderImages, trendingDeals, todaysDeals } from "@/mock";
-import { useNavigation } from "@react-navigation/native";
-import Header from "../components/header.component";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -59,7 +59,7 @@ const HomeScreen = () => {
         >
           <Ionicons name="location-outline" size={24} color="black" />
           <Pressable>
-            <Text style={{ fontSize: 13, fontWeight: 500 }}>
+            <Text style={{ fontSize: 13, fontWeight: "500" }}>
               Deliver to name - City Pincode
             </Text>
           </Pressable>
@@ -118,6 +118,11 @@ const HomeScreen = () => {
         >
           {trendingDeals.map((item) => (
             <Pressable
+              onPress={() =>
+                navigation.navigate("ProductInfo", {
+                  product: item,
+                })
+              }
               key={item.id}
               style={{
                 marginVertical: 10,

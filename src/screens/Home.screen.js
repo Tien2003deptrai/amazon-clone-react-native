@@ -1,29 +1,20 @@
 import { fakeStoreProductApi } from "@env";
-import {
-  AntDesign,
-  Feather,
-  Ionicons,
-  MaterialIcons,
-} from "@expo/vector-icons";
-import { useState, useEffect, useCallback } from "react";
-import {
-  Pressable,
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-  Image,
-} from "react-native";
-import { SliderBox } from "react-native-image-slider-box";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { useState, useEffect } from "react";
+import { Pressable, ScrollView, Text, View, Image } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
+import { SliderBox } from "react-native-image-slider-box";
 
 import ErrorBoundary from "../components/ErrorBoundary.component";
 import ProductItem from "../components/ProductItem.component";
 import SafeArea from "../components/safearea.component";
 
 import { categories, sliderImages, trendingDeals, todaysDeals } from "@/mock";
+import { useNavigation } from "@react-navigation/native";
+import Header from "../components/header.component";
 
 const HomeScreen = () => {
+  const navigation = useNavigation();
   const [products, setProducts] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [category, setCategory] = useState("jewelery");
@@ -54,37 +45,7 @@ const HomeScreen = () => {
   return (
     <SafeArea>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Search Header Start */}
-        <View
-          style={{
-            backgroundColor: "#00CED1",
-            padding: 10,
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <Pressable
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginHorizontal: 7,
-              gap: 10,
-              backgroundColor: "white",
-              borderRadius: 3,
-              height: 38,
-              flex: 1,
-            }}
-          >
-            <AntDesign
-              style={{ paddingLeft: 10 }}
-              name="search1"
-              size={22}
-              color="black"
-            />
-            <TextInput placeholder="Search Amazon.in" />
-          </Pressable>
-          <Feather name="mic" size={24} color="black" />
-        </View>
+        <Header />
 
         {/* Adreess Section Start */}
         <View
@@ -189,6 +150,11 @@ const HomeScreen = () => {
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {todaysDeals.map((item) => (
             <Pressable
+              onPress={() =>
+                navigation.navigate("ProductInfo", {
+                  product: item,
+                })
+              }
               key={item.id}
               style={{
                 marginVertical: 10,

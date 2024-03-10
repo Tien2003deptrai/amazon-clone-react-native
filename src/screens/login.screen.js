@@ -74,7 +74,8 @@ const LoginScreen = () => {
     <SafeArea customStyles={{ alignItems: "center" }}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        behavior={Platform.OS === "ios" ? "position" : null}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 50 : 70}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <ScrollView>
@@ -210,6 +211,8 @@ const LoginScreen = () => {
                 Don't have a account? Sign Up
               </Text>
             </Pressable>
+
+            <View style={{ marginBottom: 80 }} />
           </ScrollView>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>

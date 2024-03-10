@@ -4,6 +4,7 @@ import {
   Ionicons,
 } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
+import { useState } from "react";
 import {
   View,
   Text,
@@ -12,17 +13,31 @@ import {
   ImageBackground,
   Pressable,
 } from "react-native";
+import { useDispatch } from "react-redux";
 
 import Header from "../components/header.component";
 import SafeArea from "../components/safearea.component";
+import { addToCart } from "../services/redux/slices/cartSlice";
 
 const ProductInfoScreen = () => {
+  const dispatch = useDispatch();
   const route = useRoute();
+  const [addedToCart, setAddedToCart] = useState(false);
   const { product } = route.params;
 
   //Set Width and height for a square image or a 1:1 aspect ratio
   const { width } = Dimensions.get("window");
   const height = (width * 100) / 100;
+
+  const addItemToCart = (product) => {
+    if (!product) return;
+    setAddedToCart(true);
+    dispatch(addToCart(product));
+
+    setTimeout(() => {
+      setAddedToCart(false);
+    }, 1600);
+  };
 
   return (
     <SafeArea>
@@ -191,6 +206,7 @@ const ProductInfoScreen = () => {
 
         {/* Buy and cart button */}
         <Pressable
+          onPress={() => addItemToCart(product)}
           style={{
             backgroundColor: "#FFC72C",
             padding: 10,
@@ -200,7 +216,7 @@ const ProductInfoScreen = () => {
             margin: 10,
           }}
         >
-          <Text>Add To Cart</Text>
+          {addedToCart ? <Text>Added to cart</Text> : <Text>Add To Cart</Text>}
         </Pressable>
         <Pressable
           style={{

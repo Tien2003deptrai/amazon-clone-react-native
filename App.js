@@ -1,15 +1,19 @@
 import { StatusBar } from "expo-status-bar";
+import { Provider } from "react-redux";
 
 import Navigation from "./src/infrastructure/navigation";
 import { AuthenticationContextProvider } from "./src/services/authentication/authentication.context";
+import store from "./src/services/redux/store";
 
 export default function App() {
   return (
     <>
       <StatusBar style="auto" />
-      <AuthenticationContextProvider>
-        <Navigation />
-      </AuthenticationContextProvider>
+      <Provider store={store}>
+        <AuthenticationContextProvider>
+          <Navigation />
+        </AuthenticationContextProvider>
+      </Provider>
     </>
   );
 }

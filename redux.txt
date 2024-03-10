@@ -1,3 +1,5 @@
+In Redux, a slice is a concept introduced by the Redux Toolkit. A slice represents a piece of the Redux state and includes the reducer logic and action creators that are specific to that part of the state.
+
 Actions are plain JavaScript objects that represent an intention to change the state. They contain a type field that describes the type of action being performed.
 Actions are typically created using action creator functions, which are functions that return action objects.
 

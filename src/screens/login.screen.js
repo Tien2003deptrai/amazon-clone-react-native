@@ -78,7 +78,7 @@ const LoginScreen = () => {
         keyboardVerticalOffset={Platform.OS === "ios" ? 50 : 70}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ScrollView>
+          <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{ alignItems: "center" }}>
               <Image
                 style={{ width: 150, height: 100 }}

@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import Navigation from "./src/infrastructure/navigation";
 import { AuthenticationContextProvider } from "./src/services/authentication/authentication.context";
 import store from "./src/services/redux/store";
+import { ModalPortal } from "react-native-modals";
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
       <Provider store={store}>
         <AuthenticationContextProvider>
           <Navigation />
+          <ModalPortal />
         </AuthenticationContextProvider>
       </Provider>
     </>

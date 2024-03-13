@@ -5,12 +5,12 @@ import { useState, useEffect } from "react";
 import { Pressable, ScrollView, Text, View, Image } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { SliderBox } from "react-native-image-slider-box";
+import { BottomModal, ModalContent, SlideAnimation } from "react-native-modals";
 
 import ErrorBoundary from "../components/ErrorBoundary.component";
 import ProductItem from "../components/ProductItem.component";
 import Header from "../components/header.component";
 import SafeArea from "../components/safearea.component";
-import { BottomModal, ModalContent, SlideAnimation } from "react-native-modals";
 
 import { categories, sliderImages, trendingDeals, todaysDeals } from "@/mock";
 

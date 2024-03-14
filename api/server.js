@@ -5,6 +5,7 @@ import express from "express";
 import mongoose from "mongoose";
 
 import accountRoutes from "./routes/account.routes.js";
+import addressRoutes from "./routes/address.routes.js";
 
 dotenv.config();
 const app = express();
@@ -32,3 +33,4 @@ mongoose
 
 // Server Endpoints
 app.use(`/${apiVersion}/users`, accountRoutes);
+app.use(`/${apiVersion}/address`, addressRoutes);

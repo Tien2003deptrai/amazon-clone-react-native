@@ -28,7 +28,8 @@ const sendVerificationEmailToUser = async (email, verificationToken) => {
   }
 };
 
-const generateSecretKey = () => {
+const generateSecretKey = (secretKey = false) => {
+  if (secretKey) return process.env.secretKeyForToken;
   return crypto.randomBytes(32).toString("hex"); // Convert bytes to hex
 };
 
@@ -37,7 +38,7 @@ const generateToken = (payload) => {
     {
       userId: payload._id,
     },
-    generateSecretKey(),
+    generateSecretKey(true),
   );
 
   return token;

@@ -4,7 +4,7 @@ import {
   logInUser,
   registerUser,
   verifyUser,
-} from "../controllers/usersController.js";
+} from "../controllers/users.controller.js";
 
 const accountRoutes = express.Router();
 
@@ -14,7 +14,7 @@ const accountRoutes = express.Router();
 accountRoutes.route("/register").post(registerUser);
 
 //@desc   Endpoint to verify email
-//@route  GET /api/apiVersion/users/verift/:token
+//@route  GET /api/apiVersion/users/verify/:token
 //@access Public
 accountRoutes.route("/verify/:token").get(verifyUser);
 

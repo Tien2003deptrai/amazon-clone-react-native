@@ -2,7 +2,8 @@ import { Entypo, AntDesign, Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import HomeNavigation from "./home.navigation";
-import HomeScreen from "../../screens/Home.screen";
+import CartScreen from "../../screens/Cart.screen";
+import ProfileScreen from "../../screens/Profile.screen";
 
 const TabNavigation = createBottomTabNavigator();
 
@@ -27,7 +28,7 @@ const AppNavigation = () => {
       />
       <TabNavigation.Screen
         name="ProfileTab"
-        component={HomeScreen}
+        component={ProfileScreen}
         options={{
           tabBarLabel: "Profile",
           tabBarLabelStyle: {
@@ -43,7 +44,7 @@ const AppNavigation = () => {
       />
       <TabNavigation.Screen
         name="CartTab"
-        component={HomeScreen}
+        component={CartScreen}
         options={{
           tabBarLabel: "Cart",
           tabBarLabelStyle: {

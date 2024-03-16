@@ -1,7 +1,7 @@
-import { fakeStoreProductApi } from "@env";
+import { fakeStoreProductApi, apiBaseUrl, apiVersion } from "@env";
 import { Ionicons, MaterialIcons, Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Pressable, ScrollView, Text, View, Image } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { SliderBox } from "react-native-image-slider-box";
@@ -11,12 +11,16 @@ import ErrorBoundary from "../components/ErrorBoundary.component";
 import ProductItem from "../components/ProductItem.component";
 import Header from "../components/header.component";
 import SafeArea from "../components/safearea.component";
+import { AuthenticationContext } from "../services/authentication/authentication.context";
 
 import { categories, sliderImages, trendingDeals, todaysDeals } from "@/mock";
 
 const HomeScreen = () => {
+  const { authToken } = useContext(AuthenticationContext);
   const navigation = useNavigation();
   const [products, setProducts] = useState([]);
+  const [addresses, setAddresses] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [category, setCategory] = useState("jewelery");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,6 +48,33 @@ const HomeScreen = () => {
     fetchProducts();
   }, []);
 
+  useEffect(() => {
+    const fetchAddresses = async () => {
+      try {
+        const fetchAddressesEndpoint = `${apiBaseUrl}/${apiVersion}/address/addresses/${authToken.userId}`;
+        const response = await fetch(fetchAddressesEndpoint, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken.token}`,
+          },
+        });
+
+        if (response.status === 401 || response.status === 404) {
+          throw new Error("Unauthorized access.");
+        }
+
+        const data = await response.json();
+        setAddresses(data.addresses);
+      } catch (error) {
+        alert(error.message);
+      }
+    };
+
+    if (isModalOpen) {
+      fetchAddresses();
+    }
+  }, [isModalOpen]);
+
   return (
     <>
       <SafeArea>
@@ -63,7 +94,9 @@ const HomeScreen = () => {
           >
             <Ionicons name="location-outline" size={24} color="black" />
             <Text style={{ fontSize: 13, fontWeight: "500" }}>
-              Deliver to name - City Pincode
+              {selectedAddress
+                ? `Deliver to ${selectedAddress?.name} - ${selectedAddress?.city}, ${selectedAddress?.postalCode}`
+                : "Select a Delivery Address"}
             </Text>
 
             <MaterialIcons name="keyboard-arrow-down" size={24} color="black" />
@@ -281,7 +314,59 @@ const HomeScreen = () => {
           </View>
 
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {/* Available Addresses */}
+            {addresses.map((address) => (
+              <Pressable
+                onPress={() => {
+                  setIsModalOpen(false);
+                  setSelectedAddress(address);
+                }}
+                key={address._id}
+                style={{
+                  width: 140,
+                  height: 140,
+                  borderColor: "#D0D0D0",
+                  borderWidth: 1,
+                  padding: 10,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: 3,
+                  marginRight: 15,
+                  marginTop: 10,
+                  backgroundColor:
+                    selectedAddress._id === address._id ? "#FBCEB1" : "white",
+                }}
+              >
+                <View
+                  style={{ flexDirection: "row", alignItems: "center", gap: 3 }}
+                >
+                  <Text style={{ fontSize: 13, fontWeight: "bold" }}>
+                    {address?.name}
+                  </Text>
+                  <Entypo name="location-pin" size={24} color="red" />
+                </View>
+
+                <Text
+                  numberOfLines={1}
+                  style={{ width: 130, fontSize: 13, textAlign: "center" }}
+                >
+                  {address?.houseNumber}, {address?.landmark}
+                </Text>
+
+                <Text
+                  numberOfLines={1}
+                  style={{ width: 130, fontSize: 13, textAlign: "center" }}
+                >
+                  {address?.street}
+                </Text>
+
+                <Text
+                  numberOfLines={1}
+                  style={{ width: 130, fontSize: 13, textAlign: "center" }}
+                >
+                  {address?.country}, {address?.city}
+                </Text>
+              </Pressable>
+            ))}
 
             <Pressable
               onPress={() => {

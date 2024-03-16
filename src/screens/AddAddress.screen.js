@@ -1,6 +1,6 @@
 import { apiBaseUrl, apiVersion } from "@env";
-import { MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { MaterialIcons, Entypo } from "@expo/vector-icons";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { useEffect, useState, useContext } from "react";
 import { View, Text, ScrollView, Pressable } from "react-native";
 
@@ -11,12 +11,12 @@ import { AuthenticationContext } from "../services/authentication/authentication
 const AddAddressScreen = () => {
   const { authToken } = useContext(AuthenticationContext);
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   const [addresses, setAddresses] = useState([]);
   useEffect(() => {
     const fetchAddresses = async () => {
       try {
         const fetchAddressesEndpoint = `${apiBaseUrl}/${apiVersion}/address/addresses/${authToken.userId}`;
-        console.log(fetchAddressesEndpoint);
         const response = await fetch(fetchAddressesEndpoint, {
           headers: {
             "Content-Type": "application/json",
@@ -35,8 +35,10 @@ const AddAddressScreen = () => {
       }
     };
 
-    fetchAddresses();
-  }, []);
+    if (isFocused) {
+      fetchAddresses();
+    }
+  }, [isFocused]);
 
   return (
     <SafeArea>
@@ -71,7 +73,96 @@ const AddAddressScreen = () => {
             />
           </Pressable>
 
-          <Pressable>{/* List of available addresses */}</Pressable>
+          {addresses.map((address) => (
+            <Pressable
+              key={address._id}
+              style={{
+                borderWidth: 1,
+                borderColor: "#D0D0D0",
+                padding: 10,
+                alignItems: "center",
+                gap: 5,
+                marginVertical: 10,
+              }}
+            >
+              <View
+                style={{ flexDirection: "row", alignItems: "center", gap: 3 }}
+              >
+                <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+                  {address?.name}
+                </Text>
+                <Entypo name="location-pin" size={24} color="red" />
+              </View>
+
+              <Text style={{ fontSize: 15, color: "#181818" }}>
+                {address?.houseNumber}, {address?.landmark}
+              </Text>
+
+              <Text style={{ fontSize: 15, color: "#181818" }}>
+                {address?.street}
+              </Text>
+
+              <Text style={{ fontSize: 15, color: "#181818" }}>
+                {address?.country}, {address?.city}
+              </Text>
+
+              <Text style={{ fontSize: 15, color: "#181818" }}>
+                Phone no: {address?.mobileNumber}
+              </Text>
+
+              <Text style={{ fontSize: 15, color: "#181818" }}>
+                Pincode: {address?.postalCode}
+              </Text>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: 10,
+                  marginTop: 7,
+                }}
+              >
+                <Pressable
+                  style={{
+                    backgroundColor: "#F5F5F5",
+                    paddingHorizontal: 10,
+                    paddingVertical: 6,
+                    borderWidth: 0.9,
+                    borderRadius: 5,
+                    borderColor: "#D0D0D0",
+                  }}
+                >
+                  <Text>Edit</Text>
+                </Pressable>
+
+                <Pressable
+                  style={{
+                    backgroundColor: "#F5F5F5",
+                    paddingHorizontal: 10,
+                    paddingVertical: 6,
+                    borderWidth: 0.9,
+                    borderRadius: 5,
+                    borderColor: "#D0D0D0",
+                  }}
+                >
+                  <Text>Remove</Text>
+                </Pressable>
+
+                <Pressable
+                  style={{
+                    backgroundColor: "#F5F5F5",
+                    paddingHorizontal: 10,
+                    paddingVertical: 6,
+                    borderWidth: 0.9,
+                    borderRadius: 5,
+                    borderColor: "#D0D0D0",
+                  }}
+                >
+                  <Text>Set as Default</Text>
+                </Pressable>
+              </View>
+            </Pressable>
+          ))}
         </View>
       </ScrollView>
     </SafeArea>

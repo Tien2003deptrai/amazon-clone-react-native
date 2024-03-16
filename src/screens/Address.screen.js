@@ -15,9 +15,10 @@ const AddressScreen = () => {
     name: "",
     mobileNumber: "",
     houseNumber: "",
+    street: "",
     area: "",
     landmark: "",
-    pincode: "",
+    postalCode: "",
   });
 
   const handleChange = (name, value) => {
@@ -60,6 +61,7 @@ const AddressScreen = () => {
       const data = await response.json();
       setFormData({
         country: "India",
+        city: "",
         name: "",
         mobileNumber: "",
         houseNumber: "",
@@ -107,6 +109,22 @@ const AddressScreen = () => {
           />
 
           <View style={{ marginVertical: 10 }}>
+            <Text style={{ fontSize: 15, fontWeight: "bold" }}>City</Text>
+            <TextInput
+              value={formData.city}
+              onChangeText={(text) => handleChange("city", text)}
+              placeholderTextColor="black"
+              style={{
+                padding: 10,
+                borderColor: "#D0D0D0",
+                borderWidth: 1,
+                marginTop: 10,
+                borderRadius: 5,
+              }}
+            />
+          </View>
+
+          <View style={{ marginVertical: 10 }}>
             <Text style={{ fontSize: 15, fontWeight: "bold" }}>Full Name</Text>
             <TextInput
               value={formData.name}
@@ -128,6 +146,7 @@ const AddressScreen = () => {
               Mobile number
             </Text>
             <TextInput
+              keyboardType="numeric"
               value={formData.mobileNumber}
               onChangeText={(text) => handleChange("mobileNumber", text)}
               placeholderTextColor="black"
@@ -161,11 +180,27 @@ const AddressScreen = () => {
 
           <View style={{ marginVertical: 10 }}>
             <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-              Area, Street, Sector or Village
+              Area, Sector or Village
             </Text>
             <TextInput
               value={formData.area}
               onChangeText={(text) => handleChange("area", text)}
+              placeholderTextColor="black"
+              style={{
+                padding: 10,
+                borderColor: "#D0D0D0",
+                borderWidth: 1,
+                marginTop: 10,
+                borderRadius: 5,
+              }}
+            />
+          </View>
+
+          <View style={{ marginVertical: 10 }}>
+            <Text style={{ fontSize: 15, fontWeight: "bold" }}>Street</Text>
+            <TextInput
+              value={formData.street}
+              onChangeText={(text) => handleChange("street", text)}
               placeholderTextColor="black"
               style={{
                 padding: 10,
@@ -194,10 +229,12 @@ const AddressScreen = () => {
           </View>
 
           <View style={{ marginVertical: 10 }}>
-            <Text style={{ fontSize: 15, fontWeight: "bold" }}>Pincode</Text>
+            <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+              Postal Code
+            </Text>
             <TextInput
-              value={formData.pincode}
-              onChangeText={(text) => handleChange("pincode", text)}
+              value={formData.postalCode}
+              onChangeText={(text) => handleChange("postalCode", text)}
               placeholderTextColor="black"
               style={{
                 padding: 10,

@@ -1,8 +1,6 @@
-import { apiBaseUrl, apiVersion } from "@env";
 import { MaterialIcons, AntDesign } from "@expo/vector-icons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-import { useState, useContext } from "react";
+import { useContext, useState } from "react";
 import {
   View,
   Image,
@@ -20,55 +18,10 @@ import SafeArea from "../components/safearea.component";
 import { AuthenticationContext } from "../services/authentication/authentication.context";
 
 const LoginScreen = () => {
-  const { setAuthToken } = useContext(AuthenticationContext);
-  const [formData, setFormData] = useState({
-    email: null,
-    password: null,
-  });
+  const { login, loginLoading } = useContext(AuthenticationContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigation = useNavigation();
-
-  const handleChange = (name, value) => {
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const login = () => {
-    const { email, password } = formData;
-
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailRegex.test(email)) {
-      alert("Invalid email format.");
-      return;
-    }
-
-    const loginUserEndpoint = `${apiBaseUrl}/${apiVersion}/users/login`;
-    fetch(loginUserEndpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email.toLowerCase(),
-        password,
-      }),
-    })
-      .then((response) => {
-        if (response.status === 404 || response.status === 400) {
-          throw new Error("Incorrect credentials");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setFormData({
-          name: null,
-          email: null,
-        });
-        AsyncStorage.setItem("authToken", data.token);
-        setAuthToken(data.token);
-      })
-      .catch((error) => {
-        alert(error.message || "Internal server error.");
-      });
-  };
 
   return (
     <SafeArea customStyles={{ alignItems: "center" }}>
@@ -117,8 +70,8 @@ const LoginScreen = () => {
                   color="gray"
                 />
                 <TextInput
-                  value={formData.email}
-                  onChangeText={(text) => handleChange("email", text)}
+                  value={email}
+                  onChangeText={(text) => setEmail(text)}
                   style={{
                     color: "gray",
                     marginVertical: 10,
@@ -148,8 +101,8 @@ const LoginScreen = () => {
                   color="gray"
                 />
                 <TextInput
-                  value={formData.password}
-                  onChangeText={(text) => handleChange("password", text)}
+                  value={password}
+                  onChangeText={(text) => setPassword(text)}
                   secureTextEntry
                   style={{
                     color: "gray",
@@ -179,7 +132,8 @@ const LoginScreen = () => {
             <View style={{ marginTop: 80 }} />
 
             <Pressable
-              onPress={login}
+              onPress={() => login(email, password)}
+              disabled={loginLoading}
               style={{
                 width: 200,
                 backgroundColor: "#FEBE10",
@@ -187,6 +141,7 @@ const LoginScreen = () => {
                 marginLeft: "auto",
                 marginRight: "auto",
                 padding: 15,
+                opacity: loginLoading ? 0.6 : 1,
               }}
             >
               <Text

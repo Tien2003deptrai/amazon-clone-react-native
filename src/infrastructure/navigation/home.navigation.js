@@ -15,7 +15,7 @@ const HomeNavigation = () => {
         name="ProductInfo"
         component={ProductInfoScreen}
       /> */}
-      {/* <StackNavigation.Screen name="AddAddress" component={AddAddressScreen} /> */}
+      <StackNavigation.Screen name="AddAddress" component={AddAddressScreen} />
       <StackNavigation.Screen name="Address" component={AddressScreen} />
     </StackNavigation.Navigator>
   );

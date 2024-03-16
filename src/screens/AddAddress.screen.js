@@ -1,12 +1,42 @@
+import { apiBaseUrl, apiVersion } from "@env";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { View, Text, ScrollView, Pressable, TextInput } from "react-native";
+import { useEffect, useState, useContext } from "react";
+import { View, Text, ScrollView, Pressable } from "react-native";
 
 import Header from "../components/header.component";
 import SafeArea from "../components/safearea.component";
+import { AuthenticationContext } from "../services/authentication/authentication.context";
 
 const AddAddressScreen = () => {
+  const { authToken } = useContext(AuthenticationContext);
   const navigation = useNavigation();
+  const [addresses, setAddresses] = useState([]);
+  useEffect(() => {
+    const fetchAddresses = async () => {
+      try {
+        const fetchAddressesEndpoint = `${apiBaseUrl}/${apiVersion}/address/addresses/${authToken.userId}`;
+        console.log(fetchAddressesEndpoint);
+        const response = await fetch(fetchAddressesEndpoint, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken.token}`,
+          },
+        });
+
+        if (response.status === 401 || response.status === 404) {
+          throw new Error("Unauthorized access.");
+        }
+
+        const data = await response.json();
+        setAddresses(data.addresses);
+      } catch (error) {
+        alert(error.message);
+      }
+    };
+
+    fetchAddresses();
+  }, []);
 
   return (
     <SafeArea>

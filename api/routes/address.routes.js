@@ -8,7 +8,7 @@ const addressRoutes = express.Router();
 //@desc   Endpoint to add address for a user
 //@route  POST /api/apiVersion/address
 //@access Private
-addressRoutes.post("/", tokenValidate, addAddress);
+addressRoutes.post("/:userId", tokenValidate, addAddress);
 
 //@desc   Endpoint to get all addresses of a user
 //@route  GET  /api/apiVersion/addreses/:userId

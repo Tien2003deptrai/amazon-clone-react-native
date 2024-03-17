@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import CartScreen from "../../screens/Cart.screen";
+
 import BuyConfirmationScreen from "../../screens/BuyConfirmation.screen";
+import CartScreen from "../../screens/Cart.screen";
 
 const StackNavigation = createNativeStackNavigator();
 

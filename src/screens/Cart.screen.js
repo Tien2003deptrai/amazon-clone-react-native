@@ -1,16 +1,16 @@
+import { Feather, AntDesign } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { View, Text, ScrollView, Pressable, Image } from "react-native";
-
-import SafeArea from "../components/safearea.component";
-import Header from "../components/header.component";
 import { useDispatch, useSelector } from "react-redux";
-import { Feather, AntDesign } from "@expo/vector-icons";
+
+import Header from "../components/header.component";
+import SafeArea from "../components/safearea.component";
 import {
   decreaseQuantity,
   increaseQuantity,
   removeFromCart,
 } from "../services/redux/slices/cartSlice";
-import { useNavigation } from "@react-navigation/native";
 
 const CartScreen = () => {
   const dispatch = useDispatch();
@@ -34,22 +34,24 @@ const CartScreen = () => {
           </Text>
         </View>
 
-        <Text style={{ marginHorizontal: 10 }}>EMI Details</Text>
+        <Text style={{ marginHorizontal: 10 }}>EMI Details: NA</Text>
 
-        <Pressable
-          onPress={() => navigation.navigate("BuyConfirmation")}
-          style={{
-            backgroundColor: "#FFC72C",
-            padding: 10,
-            borderRadius: 5,
-            justifyContent: "center",
-            alignItems: "center",
-            marginHorizontal: 10,
-            marginTop: 10,
-          }}
-        >
-          <Text>Procced to Buy {cart.length} items</Text>
-        </Pressable>
+        {cart.length > 0 && (
+          <Pressable
+            onPress={() => navigation.navigate("BuyConfirmation")}
+            style={{
+              backgroundColor: "#FFC72C",
+              padding: 10,
+              borderRadius: 5,
+              justifyContent: "center",
+              alignItems: "center",
+              marginHorizontal: 10,
+              marginTop: 10,
+            }}
+          >
+            <Text>Procced to Buy {cart.length} items</Text>
+          </Pressable>
+        )}
 
         <Text
           style={{

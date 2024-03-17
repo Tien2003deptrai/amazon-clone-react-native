@@ -1,10 +1,10 @@
 import { Entypo, AntDesign, Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
+import CartNavigation from "./cart.navigation";
 import HomeNavigation from "./home.navigation";
 import CartScreen from "../../screens/Cart.screen";
 import ProfileScreen from "../../screens/Profile.screen";
-import CartNavigation from "./cart.navigation";
 
 const TabNavigation = createBottomTabNavigator();
 

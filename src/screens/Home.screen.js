@@ -333,7 +333,7 @@ const HomeScreen = () => {
                   marginRight: 15,
                   marginTop: 10,
                   backgroundColor:
-                    selectedAddress._id === address._id ? "#FBCEB1" : "white",
+                    selectedAddress?._id === address._id ? "#FBCEB1" : "white",
                 }}
               >
                 <View

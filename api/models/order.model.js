@@ -9,7 +9,7 @@ const OrderSchema = new mongoose.Schema(
     },
     products: [
       {
-        name: {
+        title: {
           type: String,
           required: true,
         },
@@ -76,7 +76,7 @@ const OrderSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 const Order = mongoose.model.Order || mongoose.model("Order", OrderSchema);

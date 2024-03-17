@@ -12,6 +12,7 @@ const AddressScreen = () => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     country: "India",
+    state: "",
     name: "",
     mobileNumber: "",
     houseNumber: "",
@@ -61,6 +62,7 @@ const AddressScreen = () => {
       const data = await response.json();
       setFormData({
         country: "India",
+        state: "",
         city: "",
         name: "",
         mobileNumber: "",
@@ -107,6 +109,22 @@ const AddressScreen = () => {
               borderRadius: 5,
             }}
           />
+
+          <View style={{ marginVertical: 10 }}>
+            <Text style={{ fontSize: 15, fontWeight: "bold" }}>State</Text>
+            <TextInput
+              value={formData.state}
+              onChangeText={(text) => handleChange("state", text)}
+              placeholderTextColor="black"
+              style={{
+                padding: 10,
+                borderColor: "#D0D0D0",
+                borderWidth: 1,
+                marginTop: 10,
+                borderRadius: 5,
+              }}
+            />
+          </View>
 
           <View style={{ marginVertical: 10 }}>
             <Text style={{ fontSize: 15, fontWeight: "bold" }}>City</Text>

@@ -6,7 +6,7 @@ import { tokenValidate } from "../middlewares/tokenValidate.middleware.js";
 const addressRoutes = express.Router();
 
 //@desc   Endpoint to add address for a user
-//@route  POST /api/apiVersion/address
+//@route  POST /api/apiVersion/address/:userId
 //@access Private
 addressRoutes.post("/:userId", tokenValidate, addAddress);
 

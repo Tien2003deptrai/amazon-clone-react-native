@@ -1,10 +1,12 @@
 import express from "express";
 
 import {
+  getUserProfile,
   logInUser,
   registerUser,
   verifyUser,
 } from "../controllers/users.controller.js";
+import { tokenValidate } from "../middlewares/tokenValidate.middleware.js";
 
 const accountRoutes = express.Router();
 
@@ -22,5 +24,10 @@ accountRoutes.route("/verify/:token").get(verifyUser);
 //@route  POST /api/apiVersion/users/login
 //@access Public
 accountRoutes.route("/login").post(logInUser);
+
+//@desc   Endpoint to get user profile
+//@route  GET /api/apiVersion/users/:userId
+//@access Private
+accountRoutes.route("/:userId").get(tokenValidate, getUserProfile);
 
 export default accountRoutes;

@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import BuyConfirmationScreen from "../../screens/BuyConfirmation.screen";
 import CartScreen from "../../screens/Cart.screen";
+import OrderPlacedScreen from "../../screens/OrderPlaced.screen";
 
 const StackNavigation = createNativeStackNavigator();
 
@@ -12,6 +13,10 @@ const CartNavigation = () => {
       <StackNavigation.Screen
         name="BuyConfirmation"
         component={BuyConfirmationScreen}
+      />
+      <StackNavigation.Screen
+        name="OrderPlaced"
+        component={OrderPlacedScreen}
       />
     </StackNavigation.Navigator>
   );

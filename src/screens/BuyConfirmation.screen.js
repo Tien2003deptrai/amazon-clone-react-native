@@ -2,11 +2,12 @@ import { apiBaseUrl, apiVersion } from "@env";
 import { Entypo, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useContext, useEffect, useState } from "react";
-import { View, Text, ScrollView, Pressable } from "react-native";
+import { View, Text, ScrollView, Pressable, Alert } from "react-native";
+import RazorpayCheckout from "react-native-razorpay";
+import { useDispatch, useSelector } from "react-redux";
 
 import SafeArea from "../components/safearea.component";
 import { AuthenticationContext } from "../services/authentication/authentication.context";
-import { useDispatch, useSelector } from "react-redux";
 import { clearCart } from "../services/redux/slices/cartSlice";
 
 const StepsIndicator = ({ steps, currentStep, setCurrentStep }) => {
@@ -134,15 +135,35 @@ const BuyConfirmationScreen = () => {
       if (response.status === 401 || response.status === 404) {
         throw new Error("Unauthorized access.");
       }
-
-      const data = await response.json();
-      alert(data.message);
     } catch (error) {
       alert(error.message);
     } finally {
-      dispatch(clearCart());
       setLoading(false);
-      navigation.goBack();
+      navigation.replace("OrderPlaced");
+      dispatch(clearCart());
+    }
+  };
+
+  const payUsingRazorPay = async () => {
+    try {
+      const options = {
+        description: "Adding To Wallet",
+        currency: "INR",
+        name: "Amazon",
+        key: "rzp_test_E3GWYimxN7YMk8",
+        amount: total * 100,
+        prefill: {
+          email: "void@razorpay.com",
+          contact: "9191919191",
+          name: "RazorPay Software",
+        },
+        theme: { color: "#F37254" },
+      };
+
+      // Not Going to work on Expo and Expo Prev need build App
+      await RazorpayCheckout.open(options);
+    } catch (error) {
+      alert(error.message);
     }
   };
 
@@ -373,6 +394,16 @@ const BuyConfirmationScreen = () => {
             <Pressable
               onPress={() => {
                 setSelectedOption("card");
+                Alert.alert("UPI/Debit Card", "Pay Online", [
+                  {
+                    text: "Cancel",
+                    onPress: () => {},
+                  },
+                  {
+                    text: "OK",
+                    onPress: payUsingRazorPay,
+                  },
+                ]);
               }}
             >
               <View
@@ -415,7 +446,7 @@ const BuyConfirmationScreen = () => {
           </View>
         )}
 
-        {currentStep === 3 && selectedOption === "cash" && (
+        {currentStep === 3 && (
           <View style={{ marginHorizontal: 20 }}>
             <Text style={{ fontSize: 20, fontWeight: "bold" }}>Order Now</Text>
 

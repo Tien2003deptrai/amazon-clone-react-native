@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeNavigation from "./home.navigation";
 import CartScreen from "../../screens/Cart.screen";
 import ProfileScreen from "../../screens/Profile.screen";
+import CartNavigation from "./cart.navigation";
 
 const TabNavigation = createBottomTabNavigator();
 
@@ -44,7 +45,7 @@ const AppNavigation = () => {
       />
       <TabNavigation.Screen
         name="CartTab"
-        component={CartScreen}
+        component={CartNavigation}
         options={{
           tabBarLabel: "Cart",
           tabBarLabelStyle: {

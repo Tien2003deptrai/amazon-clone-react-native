@@ -1,4 +1,4 @@
-import { apiBaseUrl, apiVersion } from "@env";
+import { apiBaseUrl, apiVersion, ENV } from "@env";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
@@ -6,6 +6,8 @@ import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { View, Text, Image, ScrollView, Pressable } from "react-native";
 
 import { AuthenticationContext } from "../services/authentication/authentication.context";
+
+import { orders as mockOrders } from "@/mock";
 
 const ProfileScreen = () => {
   const [loading, setLoading] = useState(false);
@@ -47,6 +49,11 @@ const ProfileScreen = () => {
 
   useEffect(() => {
     const fetchUserAndOrders = async () => {
+      if (ENV === "preview") {
+        setOrders(mockOrders);
+        return;
+      }
+
       try {
         setLoading(true);
         const userEndpoint = `${apiBaseUrl}/${apiVersion}/users/${authToken.userId}`;
@@ -97,7 +104,7 @@ const ProfileScreen = () => {
   return (
     <ScrollView style={{ flex: 1, padding: 10, backgroundColor: "white" }}>
       <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-        Welcome {user?.name}
+        Welcome {user?.name || "Test mode name"}
       </Text>
 
       <View
@@ -167,7 +174,7 @@ const ProfileScreen = () => {
         {loading ? (
           <Text>Loading...</Text>
         ) : orders.length > 0 ? (
-          orders.map((order) => (
+          orders.map((order, index) => (
             <Pressable
               style={{
                 marginTop: 20,
@@ -179,10 +186,10 @@ const ProfileScreen = () => {
                 justifyContent: "center",
                 alignItems: "center",
               }}
-              key={order._id}
+              key={index}
             >
-              {order.products.slice(0, 3)?.map((product) => (
-                <View style={{ marginVertical: 10 }} key={product._id}>
+              {order.products.slice(0, 3)?.map((product, index) => (
+                <View style={{ marginVertical: 10 }} key={index}>
                   <Image
                     source={{ uri: product.image }}
                     style={{ width: 100, height: 100, resizeMode: "contain" }}

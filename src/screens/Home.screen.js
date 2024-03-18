@@ -1,4 +1,4 @@
-import { fakeStoreProductApi, apiBaseUrl, apiVersion } from "@env";
+import { fakeStoreProductApi, apiBaseUrl, apiVersion, ENV } from "@env";
 import { Ionicons, MaterialIcons, Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useState, useEffect, useContext } from "react";
@@ -50,6 +50,24 @@ const HomeScreen = () => {
 
   useEffect(() => {
     const fetchAddresses = async () => {
+      if (ENV === "preview") {
+        setAddresses([
+          {
+            name: "User name",
+            mobileNumber: "29301928392",
+            houseNumber: "903/930",
+            street: "Street Name",
+            landmark: "Landmark",
+            city: "City",
+            state: "State",
+            country: "India",
+            postalCode: "829183",
+            _id: { $oid: "65f6e66f583fb2762a5d8b4f" },
+          },
+        ]);
+        return;
+      }
+
       try {
         const fetchAddressesEndpoint = `${apiBaseUrl}/${apiVersion}/address/addresses/${authToken.userId}`;
         const response = await fetch(fetchAddressesEndpoint, {

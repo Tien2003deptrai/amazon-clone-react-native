@@ -1,6 +1,8 @@
-import { apiBaseUrl, apiVersion } from "@env";
+import { apiBaseUrl, apiVersion, ENV } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useState, useMemo, useEffect } from "react";
+
+import { users } from "@/mock";
 
 export const AuthenticationContext = createContext();
 
@@ -39,6 +41,24 @@ export const AuthenticationContextProvider = ({ children }) => {
 
       if (password === "") {
         throw new Error("Password can't be empty.");
+      }
+
+      if (ENV === "preview") {
+        const user = users.find((item) => item.email === email);
+        if (user?.password !== password) {
+          alert("Invalid user.");
+          return;
+        }
+        await AsyncStorage.setItem(
+          "@authToken",
+          JSON.stringify({
+            token: user.id,
+            userId: user.id,
+          }),
+        );
+        setAuthToken({ token: user.id, userId: user.id });
+        setLoginLoading(false);
+        return;
       }
 
       const loginUserEndpoint = `${apiBaseUrl}/${apiVersion}/users/login`;

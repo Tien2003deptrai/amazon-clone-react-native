@@ -1,4 +1,4 @@
-import { apiBaseUrl, apiVersion } from "@env";
+import { apiBaseUrl, apiVersion, ENV } from "@env";
 import { Entypo, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useContext, useEffect, useState } from "react";
@@ -89,6 +89,24 @@ const BuyConfirmationScreen = () => {
   useEffect(() => {
     const fetchAddresses = async () => {
       try {
+        if (ENV === "preview") {
+          setAddresses([
+            {
+              name: "User name",
+              mobileNumber: "29301928392",
+              houseNumber: "903/930",
+              street: "Street Name",
+              landmark: "Landmark",
+              city: "City",
+              state: "State",
+              country: "India",
+              postalCode: "829183",
+              _id: { $oid: "65f6e66f583fb2762a5d8b4f" },
+            },
+          ]);
+          return;
+        }
+
         const fetchAddressesEndpoint = `${apiBaseUrl}/${apiVersion}/address/addresses/${authToken.userId}`;
         const response = await fetch(fetchAddressesEndpoint, {
           headers: {
@@ -115,6 +133,7 @@ const BuyConfirmationScreen = () => {
 
   const placeOrder = async () => {
     try {
+      if (ENV === "preview") return;
       if (loading) return;
       setLoading(true);
       const placeOrderEndpoint = `${apiBaseUrl}/${apiVersion}/order/${authToken.userId}`;

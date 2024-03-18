@@ -1,4 +1,4 @@
-import { apiBaseUrl, apiVersion } from "@env";
+import { apiBaseUrl, apiVersion, ENV } from "@env";
 import { useNavigation } from "@react-navigation/native";
 import { useContext, useState } from "react";
 import { View, Text, ScrollView, TextInput, Pressable } from "react-native";
@@ -30,6 +30,11 @@ const AddressScreen = () => {
   };
 
   const addAddress = async () => {
+    if (ENV === "preview") {
+      alert("App is in Preview mode you can not add address.");
+      return;
+    }
+
     try {
       if (loading) return;
       setLoading(true);

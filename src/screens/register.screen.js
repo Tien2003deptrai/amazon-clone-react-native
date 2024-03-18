@@ -1,4 +1,4 @@
-import { apiBaseUrl, apiVersion } from "@env";
+import { apiBaseUrl, apiVersion, ENV } from "@env";
 import { MaterialIcons, AntDesign, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
@@ -26,7 +26,7 @@ const RegisterScreen = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const register = () => {
+  const register = async () => {
     const { name, email, password, confirmPassword } = formData;
     const trimmedName = name.trim();
     if (trimmedName === "") {
@@ -42,6 +42,13 @@ const RegisterScreen = () => {
 
     if (password !== confirmPassword || password === "") {
       alert("Password does not match.");
+      return;
+    }
+
+    if (ENV === "preview") {
+      alert(
+        "This app is in preview mode you can only use mock users to sign in.",
+      );
       return;
     }
 

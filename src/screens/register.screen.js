@@ -6,23 +6,19 @@ import {
   View,
   Image,
   TextInput,
-  KeyboardAvoidingView,
   Text,
   Pressable,
-  TouchableWithoutFeedback,
   ScrollView,
-  Keyboard,
-  Platform,
 } from "react-native";
 
 import SafeArea from "../components/safearea.component";
 
 const RegisterScreen = () => {
   const [formData, setFormData] = useState({
-    name: null,
-    email: null,
-    password: null,
-    confirmPassword: null,
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
   const navigation = useNavigation();
 
@@ -44,11 +40,7 @@ const RegisterScreen = () => {
       return;
     }
 
-    if (
-      password !== confirmPassword ||
-      password === "" ||
-      confirmPassword === ""
-    ) {
+    if (password !== confirmPassword || password === "") {
       alert("Password does not match.");
       return;
     }
@@ -73,10 +65,10 @@ const RegisterScreen = () => {
       })
       .then((data) => {
         setFormData({
-          name: null,
-          email: null,
-          password: null,
-          confirmPassword: null,
+          name: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
         });
         alert(data.message);
       })
@@ -87,204 +79,197 @@ const RegisterScreen = () => {
 
   return (
     <SafeArea customStyles={{ alignItems: "center" }}>
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "position" : null}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 50 : 70}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
       >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={{ alignItems: "center" }}>
-              <Image
-                style={{ width: 150, height: 100 }}
-                source={require("@/assets/logo.png")}
-              />
-            </View>
-            <View style={{ alignItems: "center" }}>
-              <Text
-                style={{
-                  fontSize: 17,
-                  fontWeight: "bold",
-                  marginTop: 12,
-                  color: "#041E42",
-                }}
-              >
-                Register to your account
-              </Text>
-            </View>
-            <View style={{ marginTop: 70 }}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 5,
-                  backgroundColor: "#D0D0D0",
-                  paddingVertical: 5,
-                  borderRadius: 5,
-                  marginTop: 30,
-                }}
-              >
-                <Ionicons
-                  style={{ marginLeft: 8 }}
-                  name="person"
-                  size={24}
-                  color="gray"
-                />
-                <TextInput
-                  value={formData.name}
-                  onChangeText={(text) => handleChange("name", text)}
-                  style={{
-                    color: "gray",
-                    marginVertical: 10,
-                    width: 300,
-                    fontSize: 16,
-                  }}
-                  placeholder="enter your full name"
-                />
-              </View>
-            </View>
-            <View style={{ marginTop: 15 }}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 5,
-                  backgroundColor: "#D0D0D0",
-                  paddingVertical: 5,
-                  borderRadius: 5,
-                }}
-              >
-                <MaterialIcons
-                  style={{ marginLeft: 8 }}
-                  name="email"
-                  size={24}
-                  color="gray"
-                />
-                <TextInput
-                  value={formData.email}
-                  onChangeText={(text) => handleChange("email", text)}
-                  style={{
-                    color: "gray",
-                    marginVertical: 10,
-                    width: 300,
-                    fontSize: 16,
-                  }}
-                  placeholder="enter your email"
-                />
-              </View>
-            </View>
-            <View style={{ marginTop: 15 }}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 5,
-                  backgroundColor: "#D0D0D0",
-                  paddingVertical: 5,
-                  borderRadius: 5,
-                }}
-              >
-                <AntDesign
-                  name="lock1"
-                  size={24}
-                  style={{ marginLeft: 8 }}
-                  color="gray"
-                />
-                <TextInput
-                  value={formData.password}
-                  onChangeText={(text) => handleChange("password", text)}
-                  secureTextEntry
-                  style={{
-                    color: "gray",
-                    marginVertical: 10,
-                    width: 300,
-                    fontSize: 16,
-                  }}
-                  placeholder="enter your password"
-                />
-              </View>
-            </View>
-            <View style={{ marginTop: 15 }}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 5,
-                  backgroundColor: "#D0D0D0",
-                  paddingVertical: 5,
-                  borderRadius: 5,
-                }}
-              >
-                <AntDesign
-                  name="lock1"
-                  size={24}
-                  style={{ marginLeft: 8 }}
-                  color="gray"
-                />
-                <TextInput
-                  value={formData.confirmPassword}
-                  onChangeText={(text) => handleChange("confirmPassword", text)}
-                  secureTextEntry
-                  style={{
-                    color: "gray",
-                    marginVertical: 10,
-                    width: 300,
-                    fontSize: 16,
-                  }}
-                  placeholder="confirm your password"
-                />
-              </View>
-            </View>
-            <View
+        <View style={{ alignItems: "center" }}>
+          <Image
+            style={{ width: 150, height: 100 }}
+            source={require("@/assets/logo.png")}
+          />
+        </View>
+        <View style={{ alignItems: "center" }}>
+          <Text
+            style={{
+              fontSize: 17,
+              fontWeight: "bold",
+              marginTop: 12,
+              color: "#041E42",
+            }}
+          >
+            Register to your account
+          </Text>
+        </View>
+        <View style={{ marginTop: 70 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 5,
+              backgroundColor: "#D0D0D0",
+              paddingVertical: 5,
+              borderRadius: 5,
+              marginTop: 30,
+            }}
+          >
+            <Ionicons
+              style={{ marginLeft: 8 }}
+              name="person"
+              size={24}
+              color="gray"
+            />
+            <TextInput
+              value={formData.name}
+              onChangeText={(text) => handleChange("name", text)}
               style={{
-                marginTop: 12,
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
+                color: "gray",
+                marginVertical: 10,
+                width: 300,
+                fontSize: 16,
               }}
-            >
-              <Text>Keep me logged in</Text>
-              <Text style={{ color: "#007FFF", fontWeight: "500" }}>
-                Forgot Password?
-              </Text>
-            </View>
-            <View style={{ marginTop: 80 }} />
-            <Pressable
-              onPress={register}
+              placeholder="enter your full name"
+            />
+          </View>
+        </View>
+        <View style={{ marginTop: 15 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 5,
+              backgroundColor: "#D0D0D0",
+              paddingVertical: 5,
+              borderRadius: 5,
+            }}
+          >
+            <MaterialIcons
+              style={{ marginLeft: 8 }}
+              name="email"
+              size={24}
+              color="gray"
+            />
+            <TextInput
+              value={formData.email}
+              onChangeText={(text) => handleChange("email", text)}
               style={{
-                width: 200,
-                backgroundColor: "#FEBE10",
-                borderRadius: 6,
-                marginLeft: "auto",
-                marginRight: "auto",
-                padding: 15,
+                color: "gray",
+                marginVertical: 10,
+                width: 300,
+                fontSize: 16,
               }}
-            >
-              <Text
-                style={{
-                  textAlign: "center",
-                  color: "white",
-                  fontSize: 16,
-                  fontWeight: "bold",
-                }}
-              >
-                Register
-              </Text>
-            </Pressable>
-            <Pressable
-              onPress={() => navigation.goBack()}
-              style={{ marginTop: 15 }}
-            >
-              <Text
-                style={{ textAlign: "center", color: "gray", fontSize: 16 }}
-              >
-                Have a account? Sign In
-              </Text>
-            </Pressable>
-            <View style={{ marginBottom: 80 }} />
-          </ScrollView>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
+              placeholder="enter your email"
+            />
+          </View>
+        </View>
+        <View style={{ marginTop: 15 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 5,
+              backgroundColor: "#D0D0D0",
+              paddingVertical: 5,
+              borderRadius: 5,
+            }}
+          >
+            <AntDesign
+              name="lock1"
+              size={24}
+              style={{ marginLeft: 8 }}
+              color="gray"
+            />
+            <TextInput
+              value={formData.password}
+              onChangeText={(text) => handleChange("password", text)}
+              secureTextEntry
+              style={{
+                color: "gray",
+                marginVertical: 10,
+                width: 300,
+                fontSize: 16,
+              }}
+              placeholder="enter your password"
+            />
+          </View>
+        </View>
+        <View style={{ marginTop: 15 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 5,
+              backgroundColor: "#D0D0D0",
+              paddingVertical: 5,
+              borderRadius: 5,
+            }}
+          >
+            <AntDesign
+              name="lock1"
+              size={24}
+              style={{ marginLeft: 8 }}
+              color="gray"
+            />
+            <TextInput
+              value={formData.confirmPassword}
+              onChangeText={(text) => handleChange("confirmPassword", text)}
+              secureTextEntry
+              style={{
+                color: "gray",
+                marginVertical: 10,
+                width: 300,
+                fontSize: 16,
+              }}
+              placeholder="confirm your password"
+            />
+          </View>
+        </View>
+        <View
+          style={{
+            marginTop: 12,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Text>Keep me logged in</Text>
+          <Text style={{ color: "#007FFF", fontWeight: "500" }}>
+            Forgot Password?
+          </Text>
+        </View>
+        <View style={{ marginTop: 80 }} />
+        <Pressable
+          onPress={register}
+          style={{
+            width: 200,
+            backgroundColor: "#FEBE10",
+            borderRadius: 6,
+            marginLeft: "auto",
+            marginRight: "auto",
+            padding: 15,
+          }}
+        >
+          <Text
+            style={{
+              textAlign: "center",
+              color: "white",
+              fontSize: 16,
+              fontWeight: "bold",
+            }}
+          >
+            Register
+          </Text>
+        </Pressable>
+        <Pressable
+          onPress={() => navigation.goBack()}
+          style={{ marginTop: 15 }}
+        >
+          <Text style={{ textAlign: "center", color: "gray", fontSize: 16 }}>
+            Have a account? Sign In
+          </Text>
+        </Pressable>
+        <View style={{ marginBottom: 80 }} />
+      </ScrollView>
     </SafeArea>
   );
 };

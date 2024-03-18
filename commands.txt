@@ -3,3 +3,7 @@ adb reverse tcp:8000 tcp:8000
 
 Install Android APK:
 npx expo run:android
+
+Publish app to Expo:
+npm install --global eas-cli
+expo publish is not supported in the local CLI, please use eas update instead
